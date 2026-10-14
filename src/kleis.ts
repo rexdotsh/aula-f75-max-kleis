@@ -47,20 +47,20 @@ const USAGE: Record<Provider, (data: Json | undefined) => Pick<Row, 'short' | 'l
 
 const isProvider = (value: unknown): value is Provider => value === 'claude' || value === 'codex';
 
-/** Which accounts to leave out, by ID, and the names to show instead of their kleis labels. */
+/** Which accounts to show, by ID, and the names to show instead of their kleis labels. */
 export interface Selection {
-  ignored: ReadonlySet<string>;
+  allowed: ReadonlySet<string>;
   names: ReadonlyMap<string, string>;
 }
 
-/** The rows for kleis's `/admin/accounts` response: enabled Claude and Codex accounts, as selected. */
-export function rows(body: unknown, { ignored, names }: Selection): Row[] {
+/** The rows for kleis's `/admin/accounts` response: the enabled Claude and Codex accounts that are allowed. */
+export function rows(body: unknown, { allowed, names }: Selection): Row[] {
   const accounts = object(body)?.accounts;
   if (!Array.isArray(accounts)) throw new TypeError('kleis returned no account list');
   return accounts.flatMap((value): Row[] => {
     const account = object(value);
     const { id, provider, label, isPrimary, enabled } = account ?? {};
-    if (typeof id !== 'string' || !isProvider(provider) || enabled !== true || ignored.has(id)) return [];
+    if (typeof id !== 'string' || !isProvider(provider) || enabled !== true || !allowed.has(id)) return [];
     const shown = typeof label === 'string' && label ? label : provider;
     return [
       {

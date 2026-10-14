@@ -18,7 +18,7 @@ test              bun tests
 
 ## Invariants
 
-- Nothing account-specific is ever committed: the URL, token, ignored IDs and display names come from the untracked `.env`. Tests use made-up accounts.
+- Nothing account-specific is ever committed: the URL, token, allowed account IDs and display names come from the untracked `.env`. Tests use made-up accounts.
 - kleis's response is untrusted JSON, validated once in `kleis.ts`; nothing else reads it.
 - Uploads flash the keyboard's progress screen, so an unchanged dashboard is never re-sent.
 - The keyboard library's lock lets this run alongside the OpenCode plugin without interleaving uploads; whichever uploads last owns the screen.

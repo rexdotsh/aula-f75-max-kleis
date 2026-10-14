@@ -18,7 +18,7 @@ const codex = (id: string, label: string, primaryWindow: unknown, secondaryWindo
   enabled: true,
   quota: { data: { status: { primaryWindow, secondaryWindow } } },
 });
-const selection = { ignored: new Set(['hidden']), names: new Map([['long label', 'short']]) };
+const selection = { allowed: new Set(['a', 'b']), names: new Map([['long label', 'short']]) };
 
 test.each<[string, unknown, Partial<Row>[]]>([
   ['claude reports its five-hour and seven-day windows', [claude('a', 'one', 31, 80)], [{ short: 31, long: 80 }]],
@@ -37,7 +37,7 @@ test.each<[string, unknown, Partial<Row>[]]>([
     [{ ...claude('a', 'one', 0, 0), quota: null }],
     [{ short: null, long: null }],
   ],
-  ['ignored accounts are left out', [claude('hidden', 'one', 1, 1), claude('b', 'two', 1, 1)], [{ id: 'b' }]],
+  ['accounts not allowed are left out', [claude('other', 'one', 1, 1), claude('b', 'two', 1, 1)], [{ id: 'b' }]],
   ['disabled accounts are left out', [{ ...claude('a', 'one', 1, 1), enabled: false }], []],
   ['a configured name replaces the kleis label', [claude('a', 'long label', 1, 1)], [{ label: 'short' }]],
   ['usage outside 0-100 is clamped', [claude('a', 'one', 140, -3)], [{ short: 100, long: 0 }]],

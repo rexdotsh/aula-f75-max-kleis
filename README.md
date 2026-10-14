@@ -19,7 +19,7 @@ Everything account-specific lives in `.env`, which is not tracked:
 | ------------------------ | --------------------------------------------------------------------- |
 | `KLEIS_URL`              | the kleis server                                                      |
 | `KLEIS_TOKEN`            | its `ADMIN_TOKEN`                                                     |
-| `KLEIS_IGNORE`           | account IDs to leave out, comma separated                             |
+| `KLEIS_ACCOUNTS`         | IDs of the accounts to show, comma separated; any others are hidden   |
 | `KLEIS_NAMES`            | `label=name` pairs to show instead of kleis labels (6 characters fit) |
 | `KLEIS_INTERVAL_MINUTES` | how often to refresh, default 5                                       |
 
